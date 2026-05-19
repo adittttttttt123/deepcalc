@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepCalc | Interactive Neural Network & AI Simulator</title>
+    <meta name="description" content="Simulator Neural Network interaktif, memvisualisasikan Fungsi Aktivasi, CNN, dan Q-Learning">
+    
+    <!-- Google Fonts: Inter & Roboto Mono -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-brain"></i>
+                <span>DeepCalc</span>
+            </div>
+            <ul class="nav-links">
+                <li class="active" data-target="neuron-section">
+                    <i class="fa-solid fa-wave-square"></i>
+                    <span>Aktivasi & ReLU</span>
+                </li>
+                <li data-target="cnn-section">
+                    <i class="fa-solid fa-border-all"></i>
+                    <span>Simulator CNN</span>
+                </li>
+                <li data-target="qlearning-section">
+                    <i class="fa-solid fa-gamepad"></i>
+                    <span>Q-Learning & DQN</span>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <h1>Interactive Neural Network & AI Simulator</h1>
+                <p>Visualisasikan konsep dasar AI secara interaktif.</p>
+            </header>
+
+            <!-- Section 1: Activation Function (Neuron & ReLU) -->
+            <section id="neuron-section" class="simulator-section active">
+                <div class="section-header">
+                    <h2>Kalkulator Fungsi Aktivasi</h2>
+                    <p>Hitung nilai neuron (z = x*w + b) dan terapkan fungsi aktivasi ReLU (f(x) = max(0, x)).</p>
+                </div>
+                
+                <div class="grid-container">
+                    <div class="card input-card">
+                        <h3><i class="fa-solid fa-calculator"></i> Parameter Neuron</h3>
+                        <div class="input-group">
+                            <label for="activation-func">Fungsi Aktivasi:</label>
+                            <select id="activation-func" class="custom-select">
+                                <option value="relu">ReLU (Rectified Linear Unit)</option>
+                                <option value="sigmoid">Sigmoid</option>
+                                <option value="tanh">Tanh (Hyperbolic Tangent)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="input-x">Input (x):</label>
+                            <input type="number" id="input-x" value="2" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label for="input-w">Weight (w):</label>
+                            <input type="number" id="input-w" value="1.5" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label for="input-b">Bias (b):</label>
+                            <input type="number" id="input-b" value="-5" step="0.1">
+                        </div>
+                        <button id="calc-relu-btn" class="btn primary-btn">Hitung ReLU</button>
+                        
+                        <div class="result-box">
+                            <div class="math-step">
+                                <span>1. Hitung z:</span>
+                                <code id="z-equation">z = (2 * 1.5) + (-5) = -2</code>
+                            </div>
+                            <div class="math-step">
+                                <span>2. Aktivasi ReLU:</span>
+                                <code id="relu-equation">f(z) = max(0, -2) = 0</code>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card chart-card">
+                        <h3>Visualisasi ReLU</h3>
+                        <div class="chart-container">
+                            <canvas id="reluChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-callout">
+                    <button class="accordion-btn">
+                        <i class="fa-solid fa-lightbulb"></i> Pelajari Konsep Matematika di Balik Simulator Ini
+                        <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p><strong>Kenapa Fungsi Aktivasi Penting?</strong><br>
+                        Fungsi ReLU (Rectified Linear Unit) mengubah semua nilai input negatif menjadi 0, dan membiarkan nilai positif tetap apa adanya (f(x) = x). Sifat 'Sparsity' ini (membuat banyak neuron bernilai 0) membantu jaringan saraf tiruan (Neural Network) belajar lebih cepat dan menghindari masalah <em>Vanishing Gradient</em> saat proses training dibandingkan fungsi tradisional seperti Sigmoid atau Tanh.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: CNN Simulator -->
+            <section id="cnn-section" class="simulator-section">
+                <div class="section-header">
+                    <h2>Simulator Matriks CNN</h2>
+                    <p>Pahami cara kerja konvolusi dengan menggeser filter matriks 3x3 di atas gambar 5x5.</p>
+                </div>
+
+                <div class="cnn-container">
+                    <div class="matrix-card">
+                        <h3>Input (Gambar 5x5)</h3>
+                        <div class="matrix-grid" id="input-matrix">
+                            <!-- JS Generated -->
+                        </div>
+                    </div>
+                    
+                    <div class="operator-icon">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+
+                    <div class="matrix-card filter-card-wrapper">
+                        <h3>Filter (Kernel 3x3)</h3>
+                        <div class="matrix-grid kernel" id="filter-matrix">
+                            <!-- JS Generated -->
+                        </div>
+                    </div>
+                    
+                    <div class="operator-icon">
+                        <i class="fa-solid fa-equals"></i>
+                    </div>
+
+                    <div class="matrix-card result-card">
+                        <h3>Feature Map (3x3)</h3>
+                        <div class="matrix-grid feature-map" id="output-matrix">
+                            <!-- JS Generated -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="controls-center">
+                    <button id="run-cnn-btn" class="btn primary-btn"><i class="fa-solid fa-play"></i> Mulai Konvolusi</button>
+                    <button id="reset-cnn-btn" class="btn secondary-btn"><i class="fa-solid fa-rotate-right"></i> Reset</button>
+                </div>
+                
+                <div class="cnn-math-box" id="cnn-math-box">
+                    <span>Detail Perhitungan (Dot Product):</span>
+                    <code id="cnn-math-equation">Tekan 'Mulai Konvolusi' untuk melihat langkah-langkah...</code>
+                </div>
+                
+                <div class="info-callout">
+                    <button class="accordion-btn">
+                        <i class="fa-solid fa-lightbulb"></i> Pelajari Konsep Matematika di Balik Simulator Ini
+                        <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p><strong>Bagaimana CNN Mendeteksi Objek?</strong><br>
+                        Proses Konvolusi di atas mensimulasikan bagaimana AI mengekstrak fitur penting dari sebuah gambar (seperti mendeteksi garis vertikal, horizontal, atau tepi objek). Matriks Filter (Kernel) bergeser di atas matriks gambar, melakukan perkalian elemen-per-elemen, lalu menjumlahkannya menjadi satu nilai baru di Feature Map.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Q-Learning & DQN Simulator -->
+            <section id="qlearning-section" class="simulator-section">
+                <div class="section-header">
+                    <h2>Q-Learning & DQN Mini-Game</h2>
+                    <p>Agen AI (tikus) belajar mencari jalan menuju keju sambil menghindari rintangan.</p>
+                </div>
+
+                <div class="grid-container rl-layout">
+                    <!-- Maze Game -->
+                    <div class="card game-card">
+                        <h3>Lingkungan (Labirin 4x4)</h3>
+                        <div class="maze-grid" id="maze-grid">
+                            <!-- JS Generated -->
+                        </div>
+                        <div class="game-controls">
+                            <button id="train-rl-btn" class="btn primary-btn"><i class="fa-solid fa-bolt"></i> Latih Agen (Auto)</button>
+                            <button id="reset-rl-btn" class="btn secondary-btn">Reset</button>
+                        </div>
+                        <div class="speed-control">
+                            <label for="sim-speed">Kecepatan:</label>
+                            <input type="range" id="sim-speed" min="1" max="3" value="2">
+                            <span id="speed-label" style="font-size: 0.85rem; color: var(--text-muted);">Normal</span>
+                        </div>
+                        <div class="stats-box">
+                            <span>Episode: <strong id="ep-count">0</strong></span>
+                            <span>Total Reward: <strong id="reward-count">0</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Q-Table & DQN Vis -->
+                    <div class="card qtable-card">
+                        <div class="tabs">
+                            <button class="tab-btn active" data-tab="qtable">Q-Table</button>
+                            <button class="tab-btn" data-tab="dqn">DQN Visual</button>
+                        </div>
+                        
+                        <div class="tab-content active" id="tab-qtable">
+                            <div class="table-responsive">
+                                <table class="q-table" id="q-table">
+                                    <thead>
+                                        <tr>
+                                            <th>State</th>
+                                            <th>Up</th>
+                                            <th>Right</th>
+                                            <th>Down</th>
+                                            <th>Left</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- JS Generated -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="tab-dqn">
+                            <div class="nn-visualization">
+                                <div class="layer input-layer">
+                                    <div class="node">S<sub>x</sub></div>
+                                    <div class="node">S<sub>y</sub></div>
+                                </div>
+                                <div class="layer hidden-layer">
+                                    <div class="node hidden"></div>
+                                    <div class="node hidden"></div>
+                                    <div class="node hidden"></div>
+                                    <div class="node hidden"></div>
+                                </div>
+                                <div class="layer output-layer">
+                                    <div class="node">U</div>
+                                    <div class="node">R</div>
+                                    <div class="node">D</div>
+                                    <div class="node">L</div>
+                                </div>
+                                <!-- Canvas for drawing connections -->
+                                <canvas id="nn-canvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-callout">
+                    <button class="accordion-btn">
+                        <i class="fa-solid fa-lightbulb"></i> Pelajari Konsep Matematika di Balik Simulator Ini
+                        <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p><strong>Bagaimana Agen AI Belajar Sendiri?</strong><br>
+                        Simulator ini menggunakan Reinforcement Learning. Agen (Tikus) tidak tahu jalan terbaik di awal (Episode 0). Setiap kali menyentuh api, ia mendapat penalti (Reward negatif). Setiap kali mendapat keju, ia mendapat Reward positif. Seiring bertambahnya episode, tabel di sebelah kanan (Q-Table) akan terisi dengan nilai kalkulasi jalur terbaik yang dipelajari tikus secara mandiri.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
