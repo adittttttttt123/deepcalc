@@ -456,9 +456,11 @@ function initRLSection() {
             let state = agentPos.r * 4 + agentPos.c;
             let action = getAction(state);
             
-            let { nr, nc, reward, isDone } = step(action);
-            done = step(action).done;
-            reward = step(action).reward;
+            let stepResult = step(action);
+            let nr = stepResult.nr;
+            let nc = stepResult.nc;
+            done = stepResult.done;
+            reward = stepResult.reward;
             
             // Q-Learning update
             let nextState = nr * 4 + nc;
