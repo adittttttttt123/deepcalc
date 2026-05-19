@@ -679,6 +679,39 @@ header p {
     margin-bottom: 0.5rem;
 }
 
+/* Watermark */
+.watermark {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(30, 41, 59, 0.8);
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    text-decoration: none;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.watermark strong {
+    color: var(--accent-primary);
+    font-weight: 600;
+}
+
+.watermark:hover {
+    background: rgba(30, 41, 59, 1);
+    transform: translateY(-2px);
+    color: var(--text-main);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
     .grid-container, .rl-layout {
